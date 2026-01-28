@@ -2,8 +2,8 @@
 
 ## 📸 Screenshot
 
-| Game Interface | Mobile View |
-|---------------|-------------|
+| Game Interface | Mobile View | Mobile View2 |
+|---------------|-------------|-------------|
 | <img src="screenshot.png" alt="WordlePractice Desktop View" width="400" style="max-width: 100%; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.2);"> | <img src="screenshot.png" alt="WordlePractice Mobile View" width="200" style="max-width: 100%; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.2);"> |<img src="screenshot2.png" alt="WordlePractice Mobile View" width="200" style="max-width: 100%; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.2);">
 
 A modern, mobile-friendly Wordle game with French translations and beautiful UI design.
