@@ -1,3 +1,51 @@
+// Translation service using CDN dictionary
+class TranslationService {
+  constructor() {
+    this.cache = new Map();
+    this.fallbackTranslations = {
+      // Fallback translations for common words if API fails
+      "tiger": "tigre", "horse": "cheval", "sheep": "mouton", "mouse": "souris", "whale": "baleine",
+      "apple": "pomme", "bread": "pain", "earth": "terre", "ocean": "océan", "happy": "heureux",
+      "brain": "cerveau", "chair": "chaise", "black": "noir", "green": "vert", "beach": "plage"
+    };
+  }
+
+  async getTranslation(word, targetLang = 'fr') {
+    // Check cache first
+    const cacheKey = `${word}-${targetLang}`;
+    if (this.cache.has(cacheKey)) {
+      return this.cache.get(cacheKey);
+    }
+
+    // Try fallback dictionary first for common words
+    if (this.fallbackTranslations[word.toLowerCase()]) {
+      const translation = this.fallbackTranslations[word.toLowerCase()];
+      this.cache.set(cacheKey, translation);
+      return translation;
+    }
+
+    // Use a free translation API (MyMemory API)
+    try {
+      const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(word)}&langpair=en|${targetLang}`);
+      const data = await response.json();
+      
+      if (data.responseStatus === 200 && data.responseData.translatedText) {
+        const translation = data.responseData.translatedText;
+        this.cache.set(cacheKey, translation);
+        return translation;
+      }
+    } catch (error) {
+      console.warn('Translation API failed, using fallback:', error);
+    }
+
+    // Final fallback: return the original word
+    this.cache.set(cacheKey, word);
+    return word;
+  }
+}
+
+const translationService = new TranslationService();
+
 // Word categories for English learning
 const wordCategories = {
   animals: ["tiger", "horse", "sheep", "mouse", "whale", "shark", "eagle", "snake", "zebra", "lemur", "panda", "koala", "camel", "goose", "moose", "otter", "coral", "crane", "gecko", "hyena"],
@@ -442,6 +490,7 @@ function Game() {
   
   function giveUp() {
     message.show(matchWord.toUpperCase())
+    displayTranslation(matchWord);
   }
   
   function addListeners() {
@@ -594,13 +643,48 @@ function Game() {
   function handleShortWord() {
     message.show(`You need ${wordLength} letters`)
   }
-  
+
   function handleInvalidWord() {
     message.show('Invalid Word')
   }
-  
+
+  async function displayTranslation(word) {
+    const footer = document.getElementById('footer');
+    if (footer) {
+      // Show loading state
+      footer.innerHTML = `
+        <div class="translation-container">
+          <h3>Translation</h3>
+          <p><strong>English:</strong> ${word.toUpperCase()}</p>
+          <p><strong>Français:</strong> Loading...</p>
+        </div>
+      `;
+
+      try {
+        const frenchTranslation = await translationService.getTranslation(word, 'fr');
+        footer.innerHTML = `
+          <div class="translation-container">
+            <h3>Translation</h3>
+            <p><strong>English:</strong> ${word.toUpperCase()}</p>
+            <p><strong>Français:</strong> ${frenchTranslation.charAt(0).toUpperCase() + frenchTranslation.slice(1)}</p>
+          </div>
+        `;
+      } catch (error) {
+        console.error('Translation failed:', error);
+        footer.innerHTML = `
+          <div class="translation-container">
+            <h3>Translation</h3>
+            <p><strong>English:</strong> ${word.toUpperCase()}</p>
+            <p><strong>Français:</strong> ${word}</p>
+          </div>
+        `;
+      }
+    }
+  }
+
   function handleCorrectGuess() {
     message.show(`YAY, CONGRATS!`)
+    displayTranslation(matchWord);
   }
 
   return {
