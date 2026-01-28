@@ -261,9 +261,9 @@ html {
 
 #game {
   position: relative;
-  width: 100%;
+  width: 98%;
   max-width: 500px;
-  margin: 0 auto;
+  margin: 0 -8px;
   display: flex;
   flex-direction: column;
   padding: 0 16px;
@@ -341,8 +341,8 @@ html {
 
 .keyboard-row {
   display: flex;
-  width: 100%;
-  margin: 0 auto 8px auto;
+  width: 94%;
+  margin: 7px auto 0px 0px;
   touch-action: manipulation;
   gap: 8px;
 }
@@ -393,6 +393,28 @@ html {
 
 .key:hover::before {
   opacity: 1;
+}
+
+.key[data-value="enter"] {
+  background: linear-gradient(135deg, #538d4e, #6aaa64) !important;
+  border-color: rgba(83, 141, 78, 0.8) !important;
+  color: #ffffff !important;
+}
+
+.key[data-value="delete"] {
+  background: linear-gradient(135deg, #b83c3c, #d64545) !important;
+  border-color: rgba(184, 60, 60, 0.8) !important;
+  color: #ffffff !important;
+}
+
+.key[data-value="enter"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(83, 141, 78, 0.4) !important;
+}
+
+.key[data-value="delete"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(184, 60, 60, 0.4) !important;
 }
 
 .key:active {
@@ -468,7 +490,7 @@ html {
 }
 
 #footer {
-  width: 100%;
+  width: 86%;
   text-align: center;
   margin: 0 16px 24px 16px;
   padding: 20px;

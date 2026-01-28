@@ -195,7 +195,15 @@ function createKey(letter, onClick) {
   const element = document.createElement('button');
   element.classList.add('key');
   element.dataset.value = letter
-  element.innerHTML = letter.toUpperCase();
+  
+  // Set icons for special keys
+  if (letter.toLowerCase() === 'enter') {
+    element.innerHTML = '↵';
+  } else if (letter.toLowerCase() === 'delete') {
+    element.innerHTML = '←';
+  } else {
+    element.innerHTML = letter.toUpperCase();
+  }
   
   element.addEventListener('click', onClick)
   let state = 'tbd'
