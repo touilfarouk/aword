@@ -58,6 +58,18 @@ const wordCategories = {
   travel: ["beach", "hotel", "plane", "train", "boat", "cabin", "camp", "city", "field", "forest", "harbor", "island", "mount", "palace", "park", "port", "road", "route", "trail", "villa"]
 };
 
+const categoryLabels = {
+  animals: "Animals",
+  food: "Food",
+  nature: "Nature",
+  daily: "Daily Life",
+  emotions: "Emotions",
+  body: "Body",
+  colors: "Colors",
+  travel: "Travel",
+  all: "Mixed"
+};
+
 let currentCategory = 'animals';
 
 // Original word dictionaries (keeping for compatibility)
@@ -67,9 +79,12 @@ const matchDict = ["cigar", "rebut", "sissy", "humph", "awake", "blush", "focal"
 const wordDict = [...matchDict, ...Object.values(wordCategories).flat()];
 
 const numWords = wordDict.length;
-function getRandomWord() {
+function getSelectedCategory() {
   const categorySelect = document.getElementById('category');
-  const selectedCategory = categorySelect ? categorySelect.value : 'all';
+  return categorySelect ? categorySelect.value : 'all';
+}
+
+function getRandomWord(selectedCategory) {
   
   let wordPool;
   if (selectedCategory === 'all') {
@@ -369,6 +384,42 @@ keyboardElement.appendChild(keyboard.element)
 // Game Element
 const gameEl = document.getElementById('game')
 
+// Clue Modal
+const clueModal = document.getElementById('clueModal');
+const clueText = document.getElementById('clueText');
+const clueCloseButton = document.getElementById('clueCloseButton');
+
+function buildClue(word, category) {
+  const label = categoryLabels[category] || "Mixed";
+  const firstLetter = word.charAt(0).toUpperCase();
+  const vowelCount = (word.match(/[aeiou]/gi) || []).length;
+  return `Category: ${label}. Starts with "${firstLetter}". Vowels: ${vowelCount}.`;
+}
+
+function showClue(clue) {
+  if (!clueModal || !clueText) return;
+  clueText.textContent = clue;
+  clueModal.classList.remove('hidden');
+  clueModal.classList.add('show');
+}
+
+function hideClue() {
+  if (!clueModal) return;
+  clueModal.classList.remove('show');
+  clueModal.classList.add('hidden');
+}
+
+if (clueCloseButton) {
+  clueCloseButton.addEventListener('click', hideClue);
+}
+if (clueModal) {
+  clueModal.addEventListener('click', (event) => {
+    if (event.target === clueModal) {
+      hideClue();
+    }
+  });
+}
+
 // Messages
 function MessageDisplay() {
   const element = document.createElement('div');
@@ -444,11 +495,16 @@ function Game() {
   
   let matchWord = ''
   function setMatchWord() {
-    matchWord = getRandomWord()
+    const selectedCategory = getSelectedCategory();
+    matchWord = getRandomWord(selectedCategory)
     // Hide answer for normal gameplay
     const footer = document.getElementById('footer');
     if (footer) {
       footer.innerHTML = '';
+    }
+
+    if (matchWord) {
+      showClue(buildClue(matchWord, selectedCategory));
     }
   }
   

@@ -502,6 +502,80 @@ html {
   min-height: 100px;
 }
 
+.clue-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(10px);
+  z-index: 1200;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 200ms ease, visibility 200ms ease;
+  padding: 20px;
+}
+
+.clue-modal.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.clue-modal.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.clue-card {
+  width: min(420px, 92vw);
+  background: linear-gradient(135deg, rgba(20, 22, 34, 0.95), rgba(12, 16, 30, 0.95));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  padding: 20px 18px;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.55);
+  text-align: center;
+}
+
+.clue-card h3 {
+  margin: 0 0 12px 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  background: linear-gradient(45deg, #6aaa64, #b59f3b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.clue-card p {
+  margin: 0 0 16px 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: #ffffff;
+}
+
+.clue-card button {
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, #538d4e, #6aaa64);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(83, 141, 78, 0.35);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.clue-card button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(83, 141, 78, 0.45);
+}
+
+.clue-card button:active {
+  transform: translateY(0);
+}
+
 .translation-container {
   max-width: 100%;
   margin: 0 auto;
